@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ExternalLink, Briefcase, Building2, Factory, Loader2 } from 'lucide-react';
 
-// Keep your partner logos as is
-import client1 from '../assets/tiger.png';
-import client2 from '../assets/pspf.jpeg';
-
 const Projects = () => {
   const [dbProjects, setDbProjects] = useState([]);
   const [loading, setLoading] = useState(true);
