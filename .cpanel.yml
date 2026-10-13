@@ -1,0 +1,9 @@
+# cPanel Git deployment: copies the committed build into the live web folder.
+# Run `npm run build` and commit dist/ before deploying; cPanel does not build.
+# Old hashed files in public_html are left in place (harmless); nothing is deleted
+# so .htaccess, .well-known and other server files stay untouched.
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/gentlema/public_html/
+    - /bin/cp -R dist/. $DEPLOYPATH

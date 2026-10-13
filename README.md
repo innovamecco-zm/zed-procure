@@ -27,11 +27,13 @@ npm run dev
 
 ## Deploying
 
-The site is hosted on cPanel, which pulls this repo with Git and serves the committed `dist/` folder. To deploy:
+The site is hosted on cPanel, which pulls this repo with Git. cPanel does not build the site: `.cpanel.yml` copies the committed `dist/` folder into `public_html`. To deploy:
 
 1. `npm run build`
 2. Commit the updated `dist/` along with your source changes and push.
-3. Pull the latest commit in cPanel's Git Version Control.
+3. In cPanel > Git Version Control > Manage > Pull or Deploy: click **Update from Remote**, then **Deploy HEAD Commit**.
+
+cPanel only deploys when its copy of the repo has no uncommitted changes, so never edit files directly in the repo folder on the server.
 
 ## Apps Script
 
