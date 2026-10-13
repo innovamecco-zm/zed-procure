@@ -15,7 +15,12 @@ const Projects = () => {
         // const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
         const response = await fetch(import.meta.env.VITE_NOTIFY_URL);
         const data = await response.json();
-        setDbProjects(data);
+        // The script returns an error object instead of a list when it fails
+        if (Array.isArray(data)) {
+          setDbProjects(data);
+        } else {
+          console.error("Unexpected projects response:", data);
+        }
       } catch (error) {
         console.error("Error fetching projects:", error);
       } finally {
@@ -32,6 +37,9 @@ const Projects = () => {
       default: return <Briefcase className="text-white w-5 h-5" />;
     }
   };
+
+  // Hide the whole section when there is nothing to show
+  if (!loading && dbProjects.length === 0) return null;
 
   return (
     <section id="projects" className="py-24 bg-slate-50 px-6">
