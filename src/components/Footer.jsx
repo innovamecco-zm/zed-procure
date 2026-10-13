@@ -29,8 +29,8 @@ const Footer = () => {
         <div>
           <h4 className="font-bold mb-6 text-lg">Quick Links</h4>
           <ul className="space-y-4 text-slate-400 text-sm">
-            <li><a href="#Services" className="hover:text-procure-copper transition">Our Services</a></li>
-            <li><a href="#Compliance" className="hover:text-procure-copper transition">Compliance Documents</a></li>
+            <li><a href="#services" className="hover:text-procure-copper transition">Our Services</a></li>
+            <li><a href="#compliance" className="hover:text-procure-copper transition">Compliance Documents</a></li>
             {/* <li><a href="#Vendor" className="hover:text-procure-copper transition">Vendor Registration</a></li> */}
             
             {/* 2. Changed <a> to <button> for the popup trigger */}

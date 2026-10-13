@@ -3,7 +3,7 @@ import React from 'react';
 // Import your client/partner logos
 import client1 from '../assets/tiger.png';
 import client2 from '../assets/pspf.jpeg';
-import client3 from '../assets/Coat_of_arms_of_Zambia.svg'; // Replace with actual unique logos
+import client3 from '../assets/Coat_of_arms_of_Zambia.png';
 import client4 from '../assets/EC-LOGO.png';
 import client5 from '../assets/RDA.png';
 import client6 from '../assets/tobacco.jpeg';

@@ -5,22 +5,25 @@ const ImageSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStart = useRef(null);
   const touchEnd = useRef(null);
+  const imageCount = images?.length ?? 0;
+
+  // Hooks must run before any early return
+  useEffect(() => {
+    if (imageCount === 0) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % imageCount);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [imageCount]);
 
   // Safety check: if images aren't loading, show a placeholder
-  if (!images || images.length === 0) {
+  if (imageCount === 0) {
     return (
       <div className="w-full h-full bg-slate-200 flex items-center justify-center rounded-3xl">
         <p className="text-slate-500 font-medium">No images provided</p>
       </div>
     );
   }
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [images.length]);
 
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);

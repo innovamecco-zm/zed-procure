@@ -1,26 +1,32 @@
 export async function notifyAdmin(payload: any) {
-  // 1. Add the siteKey right here to ensure it's always included
+  // Add the siteKey here so every request includes it
   const authorizedPayload = {
     ...payload,
-    siteKey: "gentlemans-frontend" 
+    siteKey: "gentlemans-frontend"
   };
 
+  let result;
   try {
-    await fetch(import.meta.env.VITE_NOTIFY_URL, {
+    // text/plain keeps this a "simple" request, so the browser skips the CORS
+    // preflight that Apps Script can't answer, and can still read the reply
+    const response = await fetch(import.meta.env.VITE_NOTIFY_URL, {
       method: "POST",
-      mode: "no-cors", // Crucial for GAS
       headers: {
         "Content-Type": "text/plain;charset=utf-8"
       },
       body: JSON.stringify(authorizedPayload)
     });
-
-    // With no-cors, we can't read the response body.
-    // If we reached this line, the request was successfully dispatched.
-    return { status: "dispatched" };
-
+    result = await response.json();
   } catch (error) {
     console.error("Notification Service Error:", error);
     throw new Error("Notification failed");
   }
+
+  // The script replies { status: "ok" } or { status: "error", message }
+  if (result?.status !== "ok") {
+    console.error("Notification rejected:", result);
+    throw new Error(result?.message || "Notification failed");
+  }
+
+  return result;
 }

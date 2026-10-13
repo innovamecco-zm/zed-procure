@@ -5,27 +5,15 @@ import MobileImageSlider from './MobileImageSlider.jsx';
 import { getHeroSliderImages } from '../utils/imageLoader.js';
 
 const Hero = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [sliderImages, setSliderImages] = useState([]);
+  // Client-only app, so window and the bundled images are available on first render
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [sliderImages] = useState(getHeroSliderImages);
 
   useEffect(() => {
-    setMounted(true);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    
-    // Set initial value on mount
-    handleResize();
-    
-    // Load images dynamically
-    const images = getHeroSliderImages();
-    setSliderImages(images);
-    
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Prevent hydration mismatch by not rendering slider until mounted
-  if (!mounted) return null;
 
   return (
     <header className="relative pt-0 pb-12 md:py-24 bg-white overflow-hidden">

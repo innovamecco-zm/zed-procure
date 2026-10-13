@@ -38,9 +38,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
         };
       }
 
-      // Send payload with siteKey for authorization
       await notifyAdmin({
-        siteKey: "gentlemans-frontend", 
         event: "quote_request",
         source: "website",
         timestamp: new Date().toISOString(),

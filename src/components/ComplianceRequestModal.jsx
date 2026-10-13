@@ -11,15 +11,17 @@ const DOCUMENTS = [
   "Company Profile"
 ];
 
+const EMPTY_FORM = {
+  companyName: '',
+  contactPerson: '',
+  email: '',
+  purpose: ''
+};
+
 const ComplianceRequestModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedDocs, setSelectedDocs] = useState([]);
-  const [formData, setFormData] = useState({
-    companyName: '',
-    contactPerson: '',
-    email: '',
-    purpose: ''
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
 
   if (!isOpen) return null;
 
@@ -36,21 +38,22 @@ const ComplianceRequestModal = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      // Inside handleSubmit in your React file
-await notifyAdmin({
-  siteKey: "gentlemans-frontend", // ADD THIS LINE
-  event: "compliance_request",
-  source: "website",
-  timestamp: new Date().toISOString(),
-  data: {
-    ...formData,
-    documents: selectedDocs
-  }
-});
+      await notifyAdmin({
+        event: "compliance_request",
+        source: "website",
+        timestamp: new Date().toISOString(),
+        data: {
+          ...formData,
+          documents: selectedDocs
+        }
+      });
 
       alert("Compliance request sent successfully.");
+      setFormData(EMPTY_FORM);
+      setSelectedDocs([]);
       onClose();
     } catch (err) {
+      console.error(err);
       alert("Failed to send request. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -77,6 +80,7 @@ await notifyAdmin({
             required
             placeholder="Company Name"
             className="w-full border rounded-lg p-3"
+            value={formData.companyName}
             onChange={e => setFormData({ ...formData, companyName: e.target.value })}
           />
 
@@ -84,6 +88,7 @@ await notifyAdmin({
             required
             placeholder="Contact Person"
             className="w-full border rounded-lg p-3"
+            value={formData.contactPerson}
             onChange={e => setFormData({ ...formData, contactPerson: e.target.value })}
           />
 
@@ -92,6 +97,7 @@ await notifyAdmin({
             type="email"
             placeholder="Email Address"
             className="w-full border rounded-lg p-3"
+            value={formData.email}
             onChange={e => setFormData({ ...formData, email: e.target.value })}
           />
 
@@ -100,6 +106,7 @@ await notifyAdmin({
             rows={3}
             placeholder="Purpose (Tender, Vendor Onboarding, Due Diligence...)"
             className="w-full border rounded-lg p-3"
+            value={formData.purpose}
             onChange={e => setFormData({ ...formData, purpose: e.target.value })}
           />
 
