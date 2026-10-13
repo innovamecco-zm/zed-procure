@@ -1,16 +1,38 @@
-# React + Vite
+# Gentlemans Resources LTD website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketing site for Gentlemans Resources LTD, built with React, Vite and Tailwind CSS.
 
-Currently, two official plugins are available:
+- **Quote and compliance forms** post to a Google Apps Script web app (`src/appscript/code.gs`). The script emails the admin and logs each request to a Google Sheet.
+- **Projects** are read from the "Projects" tab of the same Google Sheet through the script's `doGet`.
+- **Hero slider images** are every image in `src/assets/sliderImages/`. Add or remove files there; no code changes needed.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Setup
 
-## React Compiler
+```bash
+npm install
+cp .env.example .env   # then fill in the values
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`.env` is not committed. All variables are prefixed `VITE_`, so they end up in the public site bundle: never put secrets in them. `VITE_NOTIFY_URL` is the Apps Script web app URL.
 
-## Expanding the ESLint configuration
+## Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run lint` | Run ESLint |
+| `npm run build` | Build the site into `dist/` |
+| `npm run preview` | Serve the built `dist/` locally |
+
+## Deploying
+
+The site is hosted on cPanel, which pulls this repo with Git and serves the committed `dist/` folder. To deploy:
+
+1. `npm run build`
+2. Commit the updated `dist/` along with your source changes and push.
+3. Pull the latest commit in cPanel's Git Version Control.
+
+## Apps Script
+
+`src/appscript/code.gs` is a copy of the script deployed in the client's Google account. Editing it here does nothing on its own: paste it into the Apps Script editor and create a new deployment version. Changes to it are coordinated with the client.
