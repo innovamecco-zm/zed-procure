@@ -6,8 +6,8 @@ export const loadAssetImages = () => {
   const images = import.meta.glob('../assets/sliderImages/*.{jpg,jpeg,png,gif,webp}', { eager: true });
   
   // Map to get URLs
-  const imageList = Object.entries(images)
-    .map(([_, module]) => module.default)
+  const imageList = Object.values(images)
+    .map((module) => module.default)
     .filter(Boolean);
 
   return imageList;
