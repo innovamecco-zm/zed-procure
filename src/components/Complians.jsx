@@ -26,6 +26,24 @@ const certifications = [
     status: "Fully Compliant",
     detail: "Up-to-date with social security contributions for our local workforce.",
     color: "border-teal-600"
+  },
+  {
+    agency: "NCC",
+    status: "Registered Contractor",
+    detail: "Registered with the National Council for Construction to undertake construction works.",
+    color: "border-purple-600"
+  },
+  {
+    agency: "NHIMA",
+    status: "Fully Compliant",
+    detail: "Up-to-date with National Health Insurance Management Authority contributions for our employees.",
+    color: "border-rose-600"
+  },
+  {
+    agency: "WCFCB",
+    status: "Fully Compliant",
+    detail: "Workers' Compensation Fund Control Board cover in place for our workforce.",
+    color: "border-amber-600"
   }
 ];
 
