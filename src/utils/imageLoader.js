@@ -14,6 +14,17 @@ export const loadAssetImages = () => {
 };
 
 /**
+ * Slider helper: mark a slide and the one after it as loaded, so images are
+ * only downloaded once the slider reaches them (the next one is preloaded so
+ * the transition stays smooth).
+ */
+export const withSlideLoaded = (loaded, index, count) => {
+  const next = (index + 1) % count;
+  if (loaded.has(index) && loaded.has(next)) return loaded;
+  return new Set(loaded).add(index).add(next);
+};
+
+/**
  * Get a specific subset of images for the hero slider
  * You can customize this to pick specific images or patterns
  */

@@ -1,20 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { withSlideLoaded } from '../utils/imageLoader.js';
 
 const ImageSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  // Slides whose image may be downloaded; starts with the first two
+  const [loaded, setLoaded] = useState(() => new Set([0, 1]));
   const touchStart = useRef(null);
   const touchEnd = useRef(null);
   const imageCount = images?.length ?? 0;
 
-  // Hooks must run before any early return
+  const goTo = (index) => {
+    setCurrentIndex(index);
+    setLoaded((prev) => withSlideLoaded(prev, index, imageCount));
+  };
+
+  // Hooks must run before any early return.
+  // A timeout per slide also restarts the 5s countdown after manual navigation.
   useEffect(() => {
     if (imageCount === 0) return;
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % imageCount);
+    const timer = setTimeout(() => {
+      const next = (currentIndex + 1) % imageCount;
+      setCurrentIndex(next);
+      setLoaded((prev) => withSlideLoaded(prev, next, imageCount));
     }, 5000);
-    return () => clearInterval(timer);
-  }, [imageCount]);
+    return () => clearTimeout(timer);
+  }, [currentIndex, imageCount]);
 
   // Safety check: if images aren't loading, show a placeholder
   if (imageCount === 0) {
@@ -25,8 +36,8 @@ const ImageSlider = ({ images }) => {
     );
   }
 
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
-  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  const nextSlide = () => goTo((currentIndex + 1) % imageCount);
+  const prevSlide = () => goTo((currentIndex - 1 + imageCount) % imageCount);
 
   // Swipe logic for mobile/tablet users on desktop view
   const handleTouchStart = (e) => (touchStart.current = e.targetTouches[0].clientX);
@@ -53,12 +64,16 @@ const ImageSlider = ({ images }) => {
             index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
         >
-          <img 
-            src={img} 
-            alt={`Slide ${index}`} 
-            className="w-full h-full object-cover"
-            onDragStart={(e) => e.preventDefault()}
-          />
+          {loaded.has(index) && (
+            <img
+              src={img}
+              alt={`Slide ${index}`}
+              className="w-full h-full object-cover"
+              fetchPriority={index === 0 ? 'high' : 'auto'}
+              decoding="async"
+              onDragStart={(e) => e.preventDefault()}
+            />
+          )}
         </div>
       ))}
 
@@ -82,7 +97,7 @@ const ImageSlider = ({ images }) => {
         {images.map((_, i) => (
           <button 
             key={i}
-            onClick={() => setCurrentIndex(i)}
+            onClick={() => goTo(i)}
             className={`h-2.5 rounded-full transition-all border border-black/5 shadow-sm ${
               i === currentIndex 
                 ? 'w-8 bg-blue-600' // Using blue-600 for visibility; swap for your copper hex

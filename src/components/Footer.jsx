@@ -51,7 +51,15 @@ const Footer = () => {
           <ul className="space-y-4 text-slate-400 text-sm">
             <li className="flex items-center gap-3">
               <MapPin size={18} className="text-procure-copper" />
-              <span>{companyAddress}</span>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(companyAddress)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-procure-copper transition underline-offset-4 hover:underline"
+                title="Open in Google Maps"
+              >
+                {companyAddress}
+              </a>
             </li>
             <li className="flex items-center gap-3">
               <Phone size={18} className="text-procure-copper" />

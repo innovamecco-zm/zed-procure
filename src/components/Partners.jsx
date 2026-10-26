@@ -34,7 +34,8 @@ const Partners = () => {
               className="group relative flex items-center justify-center"
             >
               <img 
-                src={p.logo} 
+                src={p.logo}
+                loading="lazy" 
                 alt={p.name} 
                 className="h-10 md:h-14 w-auto object-contain opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110"
               />
