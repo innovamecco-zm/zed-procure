@@ -8,6 +8,9 @@ const DOCUMENTS = [
   "PACRA Certificate",
   "ZPPA Registration",
   "NAPSA Compliance",
+  "NCC Registration Certificate",
+  "NHIMA Compliance",
+  "Workers' Compensation (WCFCB) Compliance",
   "Company Profile"
 ];
 
